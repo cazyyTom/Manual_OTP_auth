@@ -1,8 +1,8 @@
-import {nodemailer} from 'nodemailer';
-import {Mailgen} from 'mailgen';
+import nodemailer from 'nodemailer';
+import Mailgen from 'mailgen';
 import {ApiError} from '../utils/apiError.js';
 
-const transporter = nodemailer.createTransporter({
+const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: process.env.SMTP_PORT,
     auth: {

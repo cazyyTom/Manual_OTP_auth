@@ -1,7 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import mongoose from "mongoose";
+import mongoose, {Schema} from "mongoose";
 import crypto from "crypto";
+
 
 const userSchema = new Schema({
   username: {
@@ -24,6 +25,11 @@ const userSchema = new Schema({
     type: String,
     required: [true, "Please provide a password"],
     minlength: [8, "Password must be minimum 8 characters long"],
+    select: false,
+  },
+  refreshToken:{
+    type: String,
+    default: null,
     select: false,
   },
   isEmailVerified: {
@@ -72,18 +78,18 @@ userSchema.pre("save", async function(){
 });
 
 // Compare Hashed password with user password
-userSchema.methods.isPasswordCorrect(
+userSchema.methods.isPasswordCorrect=
 async function(password){
 return await bcrypt.compare(password, this.password)
 }
-);
+;
 
 // Generate Access & Refresh token
 userSchema.methods.generateAccessToken=
   async function () {
     return jwt.sign({_id:this.id, username:this.username, email:this.email},
       process.env.ACCESS_TOKEN_SECRET,
-      {ExoiresIn: process.env.ACCESS_TOKEN_EXPIRY}
+      {ExpiresIn: process.env.ACCESS_TOKEN_EXPIRY}
     )
   };
 
