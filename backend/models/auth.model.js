@@ -67,12 +67,12 @@ const userSchema = new Schema(
       default: null,
       select: false,
     },
-    resetPasswordOtp: {
-      type: String,
-      default: null,
+    forgotPasswordOtpResendCount: {
+      type: Number,
+      default: 0,
       select: false,
     },
-    resetPasswordOtpExpires: {
+    forgotPasswordOtpLastSentAt: {
       type: Date,
       default: null,
       select: false,
@@ -127,10 +127,6 @@ if(purpose==="email_verification"){
 else if(purpose==="forgot_password"){
   this.forgotPasswordOtp = hashedOtp;
   this.forgotPasswordOtpExpires = expiryTime;
-}
-else if(purpose==="reset_password"){
-this.resetPasswordOtp = hashedOtp;
-this.resetPasswordOtpExpires = expiryTime
 }
 else{
   throw new Error("Invalid OTP generation purpose specified")
