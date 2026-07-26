@@ -4,71 +4,81 @@ import mongoose, {Schema} from "mongoose";
 import crypto from "crypto";
 
 
-const userSchema = new Schema({
-  username: {
-    type: String,
-    required: [true, "Please provide a username"],
-    unique: true,
-    lowercase: true,
-    trim: true,
-    index: true,
+const userSchema = new Schema(
+  {
+    username: {
+      type: String,
+      required: [true, "Please provide a username"],
+      unique: true,
+      lowercase: true,
+      trim: true,
+      index: true,
+    },
+    email: {
+      type: String,
+      required: [true, "Please provide an email"],
+      unique: true,
+      lowercase: true,
+      trim: true,
+      index: true,
+    },
+    password: {
+      type: String,
+      required: [true, "Please provide a password"],
+      minlength: [8, "Password must be minimum 8 characters long"],
+      select: false,
+    },
+    refreshToken: {
+      type: String,
+      default: null,
+      select: false,
+    },
+    isEmailVerified: {
+      type: Boolean,
+      default: false,
+    },
+    emailVerificationOtp: {
+      type: String,
+      default: null,
+      select: false,
+    },
+    emailVerificationOtpExpires: {
+      type: Date,
+      default: null,
+      select: false,
+    },
+    emailVerificationOtpResendCount: {
+      type: Number,
+      default: 0,
+      select: false,
+    },
+    emailVerificationOtpLastSentAt: {
+      type: Date,
+      default: null,
+      select: false,
+    },
+    forgotPasswordOtp: {
+      type: String,
+      default: null,
+      select: false,
+    },
+    forgotPasswordOtpExpires: {
+      type: Date,
+      default: null,
+      select: false,
+    },
+    resetPasswordOtp: {
+      type: String,
+      default: null,
+      select: false,
+    },
+    resetPasswordOtpExpires: {
+      type: Date,
+      default: null,
+      select: false,
+    },
   },
-  email: {
-    type: String,
-    required: [true, "Please provide an email"],
-    unique: true,
-    lowercase: true,
-    trim: true,
-    index: true,
-  },
-  password: {
-    type: String,
-    required: [true, "Please provide a password"],
-    minlength: [8, "Password must be minimum 8 characters long"],
-    select: false,
-  },
-  refreshToken:{
-    type: String,
-    default: null,
-    select: false,
-  },
-  isEmailVerified: {
-    type: Boolean,
-    default: false,
-  },
-  emailVerificationOtp: {
-    type: String,
-    default: null,
-    select: false,
-  },
-  emailVerificationOtpExpires: {
-    type: Date,
-    default: null,
-    select: false,
-  },
-  forgotPasswordOtp: {
-    type: String,
-    default: null,
-    select: false,
-  },
-  forgotPasswordOtpExpires: {
-    type: Date,
-    default: null,
-    select: false,
-  },
-  resetPasswordOtp: {
-    type: String,
-    default: null,
-    select: false,
-  },
-  resetPasswordOtpExpires: {
-    type: Date,
-    default: null,
-    select: false,
-  },
-  
-},
-{timestamps: true}
+  { timestamps: true },
 );
 
 //Lets hash password before save
@@ -86,7 +96,7 @@ return await bcrypt.compare(password, this.password)
 
 // Generate Access & Refresh token
 userSchema.methods.generateAccessToken=
-  async function () {
+  function () {
     return jwt.sign({_id:this.id, username:this.username, email:this.email},
       process.env.ACCESS_TOKEN_SECRET,
       {ExpiresIn: process.env.ACCESS_TOKEN_EXPIRY}
@@ -95,7 +105,7 @@ userSchema.methods.generateAccessToken=
 
 
 userSchema.methods.generateRefreshToken=
-  async function(){
+   function(){
     return jwt.sign({
 _id:this.id},
 process.env.REFRESH_TOKEN_SECRET,
@@ -107,18 +117,19 @@ process.env.REFRESH_TOKEN_SECRET,
 //OTP Generation on basis of Purpose
 userSchema.methods.generateOtp= function (purpose){
 const otp = crypto.randomInt(100000,1000000).toString();
+const hashedOtp = crypto.createHash("sha256").update(otp).digest("hex");
 const expiryTime= Date.now() + 10*60*1000; //10mins
 
 if(purpose==="email_verification"){
-  this.emailVerificationOtp = otp;
+  this.emailVerificationOtp = hashedOtp;
   this.emailVerificationOtpExpires = expiryTime;
 }
 else if(purpose==="forgot_password"){
-  this.forgotPasswordOtp = otp;
+  this.forgotPasswordOtp = hashedOtp;
   this.forgotPasswordOtpExpires = expiryTime;
 }
 else if(purpose==="reset_password"){
-this.resetPasswordOtp = otp;
+this.resetPasswordOtp = hashedOtp;
 this.resetPasswordOtpExpires = expiryTime
 }
 else{
