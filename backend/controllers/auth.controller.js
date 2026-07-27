@@ -1,10 +1,10 @@
 // Mention all the imports
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
-import { asyncHandler } from "../utils/AsyncHandler.js";
-import { ApiResponse } from "../utils/ApiResponse.js";
-import { ApiError } from "../utils/ApiError.js";
-import { generateAccessAndRefreshTokens } from "../utils/generateTokens.js";
+import  asyncHandler  from "../utils/AsyncHandler.js";
+import  ApiResponse  from "../utils/ApiResponse.js";
+import  ApiError  from "../utils/ApiError.js";
+import { generateAccessAndRefreshTokens } from "../utils/generateToken.js";
 import { User } from "../models/auth.model.js";
 import {
   cookieOption,

@@ -2,7 +2,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { authRouter } from "./routes/auth.routes.js";
-import { ApiError } from "./utils/ApiError.js";
+import  ApiError  from "./utils/ApiError.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 
 const app = express();

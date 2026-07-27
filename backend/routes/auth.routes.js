@@ -1,5 +1,5 @@
-import router from 'express';
-import verifyJWT from "../middlewares/auth.middleware.js";
+import {Router} from 'express';
+import {verifyJWT} from "../middlewares/auth.middleware.js";
 import {
   loginUser,
   logoutUser,
@@ -28,7 +28,7 @@ const router = Router();
 router.post("/register", registerValidator, validate, registerUser);
 router.post("/login", loginValidator, validate, loginUser);
 router.post("/refresh-token", refreshAccessToken);
-router.get("/verify-email/", verifyEmail);
+router.post("/verify-email/", verifyEmail);
 router.post(
   "/forgot-password",
   forgotPasswordValidator,
@@ -41,6 +41,7 @@ router.post(
   validate,
   resetPassword,
 );
+router.post("/resend-email-verification", resendEmailVerificationOtp);
 
 // Protected routes
 router.use(verifyJWT);
@@ -51,6 +52,6 @@ router.post(
   validate,
   changeCurrentPassword,
 );
-router.post("/resend-email-verification", resendEmailVerification);
+
 
 export default router;

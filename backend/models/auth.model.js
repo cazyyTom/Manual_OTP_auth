@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import mongoose, {Schema} from "mongoose";
 import crypto from "crypto";
@@ -99,7 +99,7 @@ userSchema.methods.generateAccessToken=
   function () {
     return jwt.sign({_id:this.id, username:this.username, email:this.email},
       process.env.ACCESS_TOKEN_SECRET,
-      {ExpiresIn: process.env.ACCESS_TOKEN_EXPIRY}
+      {expiresIn: process.env.ACCESS_TOKEN_EXPIRY}
     )
   };
 
@@ -109,7 +109,7 @@ userSchema.methods.generateRefreshToken=
     return jwt.sign({
 _id:this.id},
 process.env.REFRESH_TOKEN_SECRET,
-{ExpiresIn: process.env.REFRESH_TOKEN_EXPIRY}
+{expiresIn: process.env.REFRESH_TOKEN_EXPIRY}
 )
   };
 
