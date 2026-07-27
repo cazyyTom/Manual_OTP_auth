@@ -1,4 +1,4 @@
-import bcryptjs from "bcryptjs";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import mongoose, {Schema} from "mongoose";
 import crypto from "crypto";
@@ -134,3 +134,4 @@ else{
 
 return otp;
 }
+export const User = mongoose.model("User", userSchema);

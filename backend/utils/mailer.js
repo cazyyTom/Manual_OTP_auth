@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 import Mailgen from "mailgen";
-import { ApiError } from "../utils/apiError.js";
+import  ApiError  from "./ApiError.js";
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
@@ -22,8 +22,8 @@ const mailGenerator = new Mailgen({
 
 //Dynamic co ntent for email
 export const sendEmail = async (options) => {
-  const emailHtml = mailGenerator.generate(options.mailgenContent);
-  const emailText = mailGenerator.generatePlaintext(options.mailgenContent);
+  const emailHtml = mailGenerator.generate(options);
+  const emailText = mailGenerator.generatePlaintext(options);
 
   const mail = {
     from: process.env.SMTP_FROM,

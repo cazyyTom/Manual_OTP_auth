@@ -12,6 +12,7 @@ import {
   refreshAccessToken,
   changeCurrentPassword,
 } from "../controllers/auth.controller.js";
+import { healthCheck } from "../controllers/healthchecker.controller.js";
 import { OTP_RESEND_INTERVAL, OTP_RESEND_MAX_ATTEMPTS, OTP_RESEND_WINDOW } from "../config/constants.js";
 import { validate } from "../validators/validate.js";
 import {
@@ -42,6 +43,7 @@ router.post(
   resetPassword,
 );
 router.post("/resend-email-verification", resendEmailVerificationOtp);
+router.get("/health/db", healthCheck);
 
 // Protected routes
 router.use(verifyJWT);

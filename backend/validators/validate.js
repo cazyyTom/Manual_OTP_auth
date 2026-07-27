@@ -10,5 +10,5 @@ export const validate = (req, _res, next) => {
     message: err.msg,
   }));
 
-  throw new ApiError(422, "Validation failed", extractedErrors);
+  throw new ApiError(422, "Validation failed", "",extractedErrors);
 };
