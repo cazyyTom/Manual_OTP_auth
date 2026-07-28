@@ -36,6 +36,7 @@ router.post(
   validate,
   forgotPassword,
 );
+router.post("/verify-forgot-password-otp", verifyForgotPasswordOtp);
 router.post(
   "/reset-password/",
   resetPasswordValidator,

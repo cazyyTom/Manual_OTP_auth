@@ -55,7 +55,7 @@ export const forgotPasswordValidator = [
 ]
 
 export const changePasswordValidator = [
-    body("currentPassword")
+    body("oldPassword")
     .trim()
     .notEmpty()
     .withMessage("Please provide an input"),
