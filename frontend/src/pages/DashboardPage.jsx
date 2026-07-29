@@ -1,5 +1,4 @@
-// src/pages/DashboardPage.jsx
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 export default function DashboardPage() {
@@ -8,18 +7,29 @@ export default function DashboardPage() {
 
   const handleLogout = async () => {
     await logout();
-    // logout() only clears local state — it doesn't redirect. Navigating
-    // is this page's job, not AuthContext's, same reasoning as errors
     navigate("/login");
   };
 
   return (
-    <div>
-      <h1>Dashboard</h1>
-      {/* user is guaranteed non-null here — ProtectedRoute already
-          checked that before this component ever rendered */}
+    <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-purple-600 via-fuchsia-500 to-blue-500 p-4 text-white">
+      <h1 className="text-2xl font-semibold">Dashboard</h1>
+      {/* user is guaranteed non-null — ProtectedRoute already checked
+          before this component ever rendered */}
       <p>Welcome, {user.username}</p>
-      <button onClick={handleLogout}>Logout</button>
+      <div className="flex gap-3">
+        <Link
+          to="/change-password"
+          className="rounded-full bg-white/20 px-4 py-2 hover:bg-white/30"
+        >
+          Change password
+        </Link>
+        <button
+          onClick={handleLogout}
+          className="rounded-full bg-white/20 px-4 py-2 hover:bg-white/30"
+        >
+          Logout
+        </button>
+      </div>
     </div>
   );
 }

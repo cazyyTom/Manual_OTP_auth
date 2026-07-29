@@ -27,6 +27,7 @@ export default function App() {
           is the payoff of using Outlet over wrapping each page manually */}
       <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/change-password" element={<ChangePasswordPage />} />
       </Route>
 
       {/* Catch-all for any URL that matched nothing above. Must be LAST —
